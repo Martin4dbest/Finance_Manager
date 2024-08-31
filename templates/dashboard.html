@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f5af19, #f12711); /* Gradient background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            background: rgba(0, 0, 0, 0.8); /* Slightly transparent background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            background: #222;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        /* Form styles */
+        form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+        }
+
+        form label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        form input {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+        }
+
+        form button {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #f12711;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        form button:hover {
+            background-color: #f5af19;
+        }
+
+        .logout {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #fff;
+            text-decoration: none;
+            background-color: #444;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .logout:hover {
+            background-color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard</h1>
+        <p>Total Income: &#8358;{{ total_income }}</p>
+        <p>Total Expenses: &#8358;{{ total_expenses }}</p>
+        <p>Budget: &#8358;{{ budget }}</p>
+        <p>Remaining Budget: &#8358;{{ remaining_budget }}</p>
+
+        <h2>Recent Income</h2>
+        <ul>
+            {% for income in recent_income %}
+                <li>&#8358;{{ income.amount }} - {{ income.description }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Recent Expenses</h2>
+        <ul>
+            {% for expense in recent_expenses %}
+                <li>&#8358;{{ expense.amount }} - {{ expense.description }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Add Income</h2>
+        <form action="{{ url_for('add_income') }}" method="POST">
+            <label for="amount">Amount:</label>
+            <input type="number" step="0.01" name="amount" required>
+            <label for="description">Description:</label>
+            <input type="text" name="description" required>
+            <button type="submit">Add Income</button>
+        </form>
+
+        <h2>Add Expense</h2>
+        <form action="{{ url_for('add_expense') }}" method="POST">
+            <label for="amount">Amount:</label>
+            <input type="number" step="0.01" name="amount" required>
+            <label for="description">Description:</label>
+            <input type="text" name="description" required>
+            <button type="submit">Add Expense</button>
+        </form>
+
+        <h2>Update Budget</h2>
+        <form action="{{ url_for('update_budget') }}" method="POST">
+            <label for="budget">New Budget:</label>
+            <input type="number" step="0.01" name="budget" required>
+            <button type="submit">Update Budget</button>
+        </form>
+
+        <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+    </div>
+</body>
+</html>
+
